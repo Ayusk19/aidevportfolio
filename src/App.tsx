@@ -104,7 +104,7 @@ const projects: Project[] = [
     ],
     tags: ['Python', 'TensorFlow', 'TFLite', 'Grad-CAM', 'Streamlit', 'pytest'],
     categories: ['AI'],
-    links: [{ label: 'GitHub', href: 'https://github.com/Ayusk19/pearl-millet-trust-aware-diagnosis' }],
+    links: [{ label: 'Case Study', href: '/pearl-millet/' }],
   },
   {
     title: 'Tech Fest Event Management Platform',
@@ -186,7 +186,7 @@ const research: ResearchItem[] = [
     title: 'CNN-based Pearl Millet Disease Detection',
     description:
       'Comparative CNN study (EfficientNet, ResNet50, InceptionV3, VGG16) for early downy mildew detection, currently under review. Extended in my M.Tech dissertation with lightweight, explainable (Grad-CAM) models.',
-    link: { label: 'View code', href: 'https://github.com/Ayusk19/pearl-millet-trust-aware-diagnosis' },
+    link: { label: 'Case study', href: '/pearl-millet/' },
   },
   {
     title: 'DevSecOps Practices for Safe Delivery',

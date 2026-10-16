@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Trust-Aware Pearl Millet Diagnosis | Ayush Kumar</title>
+<meta name="description" content="A phone-sized CNN that diagnoses downy mildew in pearl millet, explains itself with Grad-CAM, and refuses to guess on poor photos. 98.4% test accuracy. M.Tech research by Ayush Kumar." />
+<meta property="og:title" content="Trust-Aware Pearl Millet Disease Diagnosis | Ayush Kumar" />
+<meta property="og:description" content="Phone-sized CNN + Grad-CAM + a trust layer that abstains on unreliable photos. 98.4% test accuracy, 2.7 MB INT8 model." />
+<meta property="og:image" content="https://www.ayushaidev.me/pearl-millet/gate-in-action.webp" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#0a0b10; --bg-alt:#0f111a; --text:#e7e9ef; --muted:#9aa2b2;
+    --accent:#6ee7ff; --accent-2:#9a7bff; --ok:#4ade80; --warn:#f87171;
+    --card:rgba(18,20,30,.72); --border:rgba(255,255,255,.08);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;font-family:Inter,"Segoe UI",sans-serif;color:var(--text);line-height:1.65;
+    background:radial-gradient(circle at 15% 0%,rgba(110,231,255,.10),transparent 40%),
+               radial-gradient(circle at 85% 20%,rgba(154,123,255,.12),transparent 40%),var(--bg);min-height:100vh}
+  h1,h2,h3{font-family:"Space Grotesk","Segoe UI",sans-serif;line-height:1.2;margin:0}
+  a{color:var(--accent)}
+  .wrap{max-width:1040px;margin:0 auto;padding:0 20px}
+  nav{display:flex;justify-content:space-between;align-items:center;padding:20px 0}
+  nav a{color:var(--muted);text-decoration:none;font-size:14px}
+  nav a:hover{color:var(--text)}
+  .kicker{color:var(--accent);text-transform:uppercase;letter-spacing:.3em;font-size:12px;font-weight:600}
+  header{padding:36px 0 28px}
+  header h1{font-size:clamp(30px,5vw,48px);margin-top:14px}
+  header p.lede{color:var(--muted);font-size:clamp(16px,2.2vw,19px);max-width:760px;margin:18px 0 0}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+  .chip{border:1px solid var(--border);background:rgba(255,255,255,.04);border-radius:999px;padding:5px 12px;font-size:12px;color:var(--muted)}
+  .chip.lock{border-color:rgba(110,231,255,.35);color:var(--accent)}
+  section{padding:34px 0;border-top:1px solid var(--border)}
+  section h2{font-size:clamp(22px,3vw,28px);margin:10px 0 14px}
+  section p{color:var(--muted);margin:0 0 12px;max-width:780px}
+  .grid{display:grid;gap:14px}
+  .stats{grid-template-columns:repeat(4,1fr)}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:20px}
+  .stat .v{font-family:"Space Grotesk",sans-serif;font-size:30px;font-weight:700;color:var(--text)}
+  .stat .l{font-size:13px;color:var(--muted);margin-top:4px}
+  .gates{grid-template-columns:repeat(3,1fr)}
+  .gate .n{font-size:12px;color:var(--accent);letter-spacing:.2em;text-transform:uppercase;font-weight:600}
+  .gate h3{font-size:18px;margin:8px 0 8px}
+  .gate p{font-size:14px;margin:0}
+  .flow{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:16px 0 4px}
+  .flow span{background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:12px;padding:8px 12px;font-size:13px}
+  .flow span.hl{border-color:rgba(110,231,255,.45);color:var(--accent)}
+  .flow i{color:var(--muted);font-style:normal}
+  figure{margin:18px 0 0}
+  figure img{width:100%;height:auto;display:block;border-radius:14px;border:1px solid var(--border);background:#fff}
+  figure.dark img{background:#0d1117}
+  figcaption{font-size:13px;color:var(--muted);margin-top:8px}
+  table{width:100%;border-collapse:collapse;font-size:14px}
+  th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--border)}
+  th{color:var(--muted);font-weight:500}
+  td.num{font-family:"Space Grotesk",sans-serif;font-weight:600}
+  .two{grid-template-columns:1fr 1fr;align-items:start}
+  ul.clean{margin:0;padding-left:18px;color:var(--muted)} ul.clean li{margin:6px 0}
+  .cta{text-align:center;padding:44px 0 56px}
+  .cta p{margin:10px auto 22px}
+  .btn{display:inline-block;background:var(--accent);color:#06121a;font-weight:700;text-decoration:none;border-radius:14px;padding:13px 22px;margin:4px}
+  .btn.ghost{background:transparent;color:var(--text);border:1px solid var(--border);font-weight:600}
+  footer{color:var(--muted);font-size:13px;padding:22px 0 34px;border-top:1px solid var(--border);text-align:center}
+  @media (max-width:820px){.stats{grid-template-columns:repeat(2,1fr)}.gates,.two{grid-template-columns:1fr}}
+  @media (max-width:420px){.stat .v{font-size:24px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav>
+    <a href="/">← Ayush Kumar · Portfolio</a>
+    <a href="#request">Request code access</a>
+  </nav>
+
+  <header>
+    <div class="kicker">Case study · M.Tech research</div>
+    <h1>Trust-Aware Pearl Millet Disease Diagnosis</h1>
+    <p class="lede">A phone-sized CNN that diagnoses downy mildew (Green Ear Disease) from a farmer's photo,
+      shows <em>why</em> with Grad-CAM, and <strong>refuses to guess</strong> when the photo is too poor or
+      the model is unsure.</p>
+    <div class="chips">
+      <span class="chip">Python · TensorFlow 2.15</span>
+      <span class="chip">MobileNetV2 transfer learning</span>
+      <span class="chip">Grad-CAM</span>
+      <span class="chip">TFLite FP32 / FP16 / INT8</span>
+      <span class="chip">Streamlit</span>
+      <span class="chip">pytest</span>
+      <span class="chip lock">🔒 Code private until publication</span>
+    </div>
+  </header>
+
+  <section>
+    <div class="kicker">Results</div>
+    <h2>Held-out test set: 312 photos the model never saw</h2>
+    <div class="grid stats">
+      <div class="card stat"><div class="v">98.4%</div><div class="l">Accuracy (307 / 312)</div></div>
+      <div class="card stat"><div class="v">98.2%</div><div class="l">Macro F1-score</div></div>
+      <div class="card stat"><div class="v">0.999</div><div class="l">ROC-AUC (one-vs-rest)</div></div>
+      <div class="card stat"><div class="v">2.7 MB</div><div class="l">INT8 model for offline phones</div></div>
+    </div>
+    <p style="margin-top:14px">3 classes: healthy, downy mildew, rust. Downy-mildew recall 95.5% (85 / 89). Frozen ImageNet
+      backbone with only 164K trainable parameters.</p>
+  </section>
+
+  <section>
+    <div class="kicker">The problem</div>
+    <h2>Accurate in the lab is not enough in the field</h2>
+    <p>Downy mildew is diagnosed by eye, which is slow and unavailable to many farmers. Most plant-disease models
+      report high accuracy on clean images, then quietly give confident wrong answers on real phone photos:
+      blurry, dark, over-exposed or compressed by WhatsApp. For a farmer, a confident wrong answer is worse
+      than no answer.</p>
+  </section>
+
+  <section>
+    <div class="kicker">My approach</div>
+    <h2>A diagnosis pipeline with a trust layer</h2>
+    <div class="flow">
+      <span>Phone photo</span><i>→</i>
+      <span class="hl">Gate 1 · quality check</span><i>→</i>
+      <span>MobileNetV2 + head</span><i>→</i>
+      <span class="hl">Gate 2 · calibrated confidence</span><i>→</i>
+      <span class="hl">Gate 3 · Grad-CAM evidence</span><i>→</i>
+      <span>Answer or "retake"</span>
+    </div>
+    <div class="grid gates" style="margin-top:18px">
+      <div class="card gate"><div class="n">Gate 1</div><h3>Image-quality check</h3>
+        <p>Before the model runs, the photo is checked for blur, noise, compression, exposure and whether a leaf
+          is actually in frame. Thresholds are set by where the <em>model's</em> accuracy drops, not by arbitrary rules.</p></div>
+      <div class="card gate"><div class="n">Gate 2</div><h3>Calibrated confidence</h3>
+        <p>Temperature scaling makes the confidence honest, and the system abstains below a threshold chosen to hit a
+          target accuracy on the answers it does give.</p></div>
+      <div class="card gate"><div class="n">Gate 3</div><h3>Grad-CAM evidence check</h3>
+        <p>Grad-CAM is turned from a picture into a number: if the model isn't looking at the leaf, the answer is
+          not trusted, even if confidence is high.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="kicker">Gate 1 in action</div>
+    <h2>Real test photos, real verdicts from the code</h2>
+    <p>Clean photos pass. Degraded versions of the same photo get a specific "retake" instruction the farmer can act on.</p>
+    <figure><img src="gate-in-action.webp" width="1600" height="717" loading="lazy"
+      alt="Grid of pearl millet leaf photos: clean photos accepted; blurry, dark, overexposed, grainy, compressed and low-resolution versions asked to retake" />
+      <figcaption>Each row is one class; each column is a smartphone-style degradation at level 4–5 of 5.</figcaption></figure>
+  </section>
+
+  <section>
+    <div class="kicker">Robustness</div>
+    <h2>Smartphone benchmark: 7 degradations × 5 severities</h2>
+    <div class="grid two">
+      <div>
+        <table>
+          <tr><th>Trust-aware result</th><th>Value</th></tr>
+          <tr><td>Severely degraded photos caught (severity 4–5)</td><td class="num">~95%</td></tr>
+          <tr><td>Clean photos wrongly sent back</td><td class="num">4.8%</td></tr>
+          <tr><td>Clean test photos answered</td><td class="num">92.3%</td></tr>
+          <tr><td>Accuracy on answered photos</td><td class="num">98.6%</td></tr>
+          <tr><td>Wrong answers on clean photos</td><td class="num">1.6% → 1.3%</td></tr>
+        </table>
+      </div>
+      <figure style="margin-top:0"><img src="gate-benchmark.webp" width="1100" height="677" loading="lazy"
+        alt="Heatmap: percentage of photos the quality gate asks to retake, by degradation type and severity" />
+        <figcaption>Share of photos asked to be retaken, by degradation and severity.</figcaption></figure>
+    </div>
+  </section>
+
+  <section>
+    <div class="kicker">Engineering</div>
+    <h2>Built like a product, not a notebook</h2>
+    <div class="grid two">
+      <ul class="clean">
+        <li><strong>Leakage-safe data:</strong> the public dataset was pre-augmented 3×, which leaks copies of one photo into
+          both train and test. I regenerated the raw version and used stratified, disjoint splits.</li>
+        <li><strong>Reproducible:</strong> one validated config, seeded runs, and a self-describing artifact folder per run.</li>
+        <li><strong>Deployable:</strong> TFLite export at FP32 (9.1 MB), FP16 (4.6 MB) and INT8 (2.7 MB) with measured
+          size, latency and accuracy trade-offs.</li>
+        <li><strong>Tested:</strong> 106 automated tests covering data, model, trust gates, predictor and the Streamlit UI,
+          running on synthetic fixtures with no real data needed.</li>
+        <li><strong>Usable:</strong> Streamlit app with diagnosis, confidence, per-class probabilities and Grad-CAM overlay.</li>
+      </ul>
+      <div>
+        <figure class="dark" style="margin-top:0"><img src="tests.webp" width="1100" height="656" loading="lazy" alt="Terminal output: 106 tests passed" />
+          <figcaption>Full test suite passing.</figcaption></figure>
+        <figure class="dark"><img src="tflite.webp" width="1100" height="222" loading="lazy" alt="TFLite model files: FP16 4.6 MB, FP32 9.1 MB, INT8 2.7 MB" />
+          <figcaption>Exported phone models.</figcaption></figure>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="kicker">Data</div>
+    <h2>2,080 leaf images, 3 classes</h2>
+    <p>Public Roboflow Universe pearl millet dataset (CC BY 4.0), regenerated without augmentation; 70 / 15 / 15
+      stratified split with balanced class weights for the rust-heavy imbalance.</p>
+    <figure><img src="class-distribution.webp" width="1100" height="688" loading="lazy" alt="Bar chart of images per class across train, validation and test splits" /></figure>
+  </section>
+
+  <section>
+    <div class="kicker">Research</div>
+    <h2>Status</h2>
+    <ul class="clean">
+      <li>M.Tech dissertation, Sharda University (supervisor: Prof. (Dr.) Sandeep Gupta).</li>
+      <li>Related paper: <em>Deep Learning Approaches for Early Detection of Downy Mildew in Pearl Millet: A Comparative CNN Study</em> (under review).</li>
+      <li>Paper on the trust-aware method in preparation. The source code will be released after publication.</li>
+    </ul>
+  </section>
+
+  <div class="cta" id="request">
+    <div class="kicker">For recruiters &amp; reviewers</div>
+    <h2 style="margin-top:10px">Want to see the code?</h2>
+    <p style="color:var(--muted);max-width:620px">The repository is private until the paper is published. I'm happy to
+      give read access to hiring teams, or walk through it live on a call.</p>
+    <a class="btn" href="mailto:ayushkumar12030@gmail.com?subject=Code%20access%20request%3A%20Pearl%20Millet%20Trust-Aware%20Diagnosis&body=Hi%20Ayush%2C%0A%0AI'd%20like%20read%20access%20to%20the%20pearl%20millet%20repository.%20My%20GitHub%20username%20is%3A%20%0A%0ACompany%20%2F%20role%3A%20">Request code access</a>
+    <a class="btn ghost" href="https://www.linkedin.com/in/ayushreactdev/">Message me on LinkedIn</a>
+  </div>
+</div>
+<footer>© 2026 Ayush Kumar · <a href="/">ayushaidev.me</a></footer>
+</body>
+</html>

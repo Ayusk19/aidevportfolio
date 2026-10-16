@@ -18,11 +18,18 @@ type Project = {
 type TimelineItem = {
   role: string
   org: string
+  period: string
   details: string[]
 }
 
+type ResearchItem = {
+  title: string
+  description: string
+  link?: { label: string; href: string }
+}
+
 const heroTypingPhrases = [
-  'AI-Integrated Full Stack Developer',
+  'AI Engineer · GenAI & LLM Apps',
   'RAG + LLM Solutions Builder',
   'Scalable Frontend to Backend Architect',
 ]
@@ -82,10 +89,7 @@ const projects: Project[] = [
     ],
     tags: ['Python', 'FastAPI', 'LangChain', 'Whisper', 'Ollama', 'PostgreSQL'],
     categories: ['AI', 'Full Stack'],
-    links: [
-      { label: 'GitHub', href: 'https://github.com/Ayusk19' },
-      { label: 'Live Demo', href: '#' },
-    ],
+    links: [{ label: 'GitHub', href: 'https://github.com/Ayusk19' }],
   },
   {
     title: 'Tech Fest Event Management Platform',
@@ -120,6 +124,7 @@ const experience: TimelineItem[] = [
   {
     role: 'AI Application Developer Intern',
     org: 'ProvatSoft',
+    period: 'Mar 2026 – Present',
     details: [
       'Worked on AI-powered assistive systems',
       'Built RAG pipelines',
@@ -130,6 +135,7 @@ const experience: TimelineItem[] = [
   {
     role: 'AI & ML Intern',
     org: 'Edunet Foundation',
+    period: 'Jun – Jul 2024',
     details: [
       'Fraud detection ML models',
       'Hyperparameter tuning',
@@ -139,6 +145,7 @@ const experience: TimelineItem[] = [
   {
     role: 'Frontend Developer Intern',
     org: 'TeachNook',
+    period: 'Jun – Aug 2023',
     details: [
       'Responsive frontend development',
       'Performance optimization',
@@ -153,10 +160,22 @@ const achievements = [
   'AI-powered assistive platform development',
 ]
 
-const research = [
-  'React.js vs Next.js Performance using Docker & Kubernetes',
-  'CNN-based Pearl Millet Disease Detection',
-  'DevSecOps Practices for Safe Delivery',
+const research: ResearchItem[] = [
+  {
+    title: 'React.js vs Next.js Performance using Docker & Kubernetes',
+    description:
+      'Published in IEEE Xplore (2026). Compares rendering speed, TTFB, FCP, LCP, CPU and memory usage of React.js and Next.js apps, both natively and containerised on Docker and Kubernetes.',
+    link: { label: 'Read on IEEE', href: 'https://doi.org/10.1109/CCIC68129.2026.11486168' },
+  },
+  {
+    title: 'CNN-based Pearl Millet Disease Detection',
+    description:
+      'Comparative CNN study (EfficientNet, ResNet50, InceptionV3, VGG16) for early downy mildew detection, currently under review. Extended in my M.Tech dissertation with lightweight, explainable (Grad-CAM) models.',
+  },
+  {
+    title: 'DevSecOps Practices for Safe Delivery',
+    description: 'Ongoing research on embedding security practices into software delivery pipelines.',
+  },
 ]
 
 const projectFilters = ['All', 'AI', 'Web', 'Full Stack']
@@ -328,7 +347,7 @@ const App = () => {
             </div>
             <div>
               <p className="text-sm font-semibold tracking-[0.2em] text-[color:var(--accent)]">AYUSH</p>
-              <p className="text-xs text-[color:var(--muted)]">AI-Integrated Full Stack Developer</p>
+              <p className="text-xs text-[color:var(--muted)]">AI Engineer · GenAI & LLM Apps</p>
             </div>
           </div>
           <div className="hidden items-center gap-6 text-sm font-medium text-[color:var(--muted)] md:flex">
@@ -379,7 +398,7 @@ const App = () => {
               variants={stagger}
             >
               <motion.p className="section-kicker" variants={fadeUp}>
-                AI-Integrated Full Stack Developer
+                AI Engineer · GenAI & LLM Apps
               </motion.p>
               <motion.h1
                 className="mt-4 text-4xl font-semibold leading-tight text-[color:var(--text)] md:text-6xl"
@@ -451,8 +470,8 @@ const App = () => {
                   </div>
                   <h3 className="mt-6 text-2xl font-semibold">Futuristic engineering mindset</h3>
                   <p className="mt-4 text-[color:var(--muted)]">
-                    Delivering premium digital experiences with intelligent automation, rapid prototyping, and production-ready
-                    architecture.
+                    Building production LLM systems: RAG pipelines, multilingual voice AI, and hybrid cloud/local
+                    inference.
                   </p>
                   <div className="mt-8 grid grid-cols-2 gap-4 text-sm">
                     <div className="glass-card rounded-2xl px-4 py-3">
@@ -476,7 +495,7 @@ const App = () => {
                     <div className="terminal-header">ayush@portfolio ~</div>
                     <div className="terminal-body">
                       <p>$ whoami</p>
-                      <p>AI-Integrated Full Stack Developer</p>
+                      <p>AI Engineer · GenAI & LLM Apps</p>
                       <p>$ focus --2026</p>
                       <p>RAG, LLM systems, scalable web apps</p>
                     </div>
@@ -492,7 +511,7 @@ const App = () => {
             <SectionHeader
               kicker="About"
               title="Crafting AI-first full stack experiences"
-              description="Strategic, recruiter-friendly positioning with a premium and minimal aesthetic."
+              description="M.Tech student and AI engineering intern building RAG, voice AI and LLM applications."
             />
             <motion.div
               className="grid gap-6 md:grid-cols-[1.2fr_0.8fr]"
@@ -532,7 +551,7 @@ const App = () => {
             <SectionHeader
               kicker="Skills"
               title="Tools to build AI-native products"
-              description="Categorized expertise curated for recruiter-friendly scanning."
+              description="The stack I use to build and ship AI applications."
             />
             <motion.div
               className="grid gap-6 md:grid-cols-2 lg:grid-cols-3"
@@ -666,7 +685,7 @@ const App = () => {
                       <p className="text-sm text-[color:var(--accent)]">{item.org}</p>
                     </div>
                     <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs uppercase tracking-[0.2em] text-[color:var(--muted)]">
-                      Timeline
+                      {item.period}
                     </span>
                   </div>
                   <ul className="mt-4 space-y-2 text-sm text-[color:var(--muted)]">
@@ -722,11 +741,19 @@ const App = () => {
               variants={stagger}
             >
               {research.map((item) => (
-                <motion.div key={item} className="glass-card rounded-3xl p-6" variants={fadeUp}>
-                  <h3 className="text-lg font-semibold">{item}</h3>
-                  <p className="mt-3 text-sm text-[color:var(--muted)]">
-                    Exploring performance, security, and AI-driven outcomes.
-                  </p>
+                <motion.div key={item.title} className="glass-card rounded-3xl p-6" variants={fadeUp}>
+                  <h3 className="text-lg font-semibold">{item.title}</h3>
+                  <p className="mt-3 text-sm text-[color:var(--muted)]">{item.description}</p>
+                  {item.link ? (
+                    <a
+                      href={item.link.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-4 inline-block rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--muted)] transition hover:text-[color:var(--text)]"
+                    >
+                      {item.link.label}
+                    </a>
+                  ) : null}
                 </motion.div>
               ))}
             </motion.div>
@@ -750,21 +777,33 @@ const App = () => {
               <motion.form
                 className="glass-card rounded-3xl p-6"
                 variants={fadeUp}
-                onSubmit={(event) => event.preventDefault()}
+                onSubmit={(event) => {
+                  event.preventDefault()
+                  const data = new FormData(event.currentTarget)
+                  const name = String(data.get('name') ?? '').trim()
+                  const email = String(data.get('email') ?? '').trim()
+                  const message = String(data.get('message') ?? '').trim()
+                  const subject = encodeURIComponent(`Portfolio enquiry${name ? ` from ${name}` : ''}`)
+                  const body = encodeURIComponent(`${message}\n\n${name}${email ? ` (${email})` : ''}`)
+                  window.location.href = `mailto:ayushkumar12030@gmail.com?subject=${subject}&body=${body}`
+                }}
               >
                 <div className="grid gap-4 md:grid-cols-2">
                   <input
                     type="text"
+                    name="name"
                     placeholder="Your name"
                     className="rounded-2xl border border-white/10 bg-transparent px-4 py-3 text-sm text-[color:var(--text)] outline-none focus:border-[color:var(--accent)]"
                   />
                   <input
                     type="email"
+                    name="email"
                     placeholder="Email address"
                     className="rounded-2xl border border-white/10 bg-transparent px-4 py-3 text-sm text-[color:var(--text)] outline-none focus:border-[color:var(--accent)]"
                   />
                 </div>
                 <textarea
+                  name="message"
                   placeholder="Tell me about your project"
                   rows={5}
                   className="mt-4 w-full rounded-2xl border border-white/10 bg-transparent px-4 py-3 text-sm text-[color:var(--text)] outline-none focus:border-[color:var(--accent)]"
@@ -812,7 +851,7 @@ const App = () => {
 
       <footer className="border-t border-white/5 bg-[color:var(--bg-alt)]">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-6 py-8 text-sm text-[color:var(--muted)] md:flex-row">
-          <p>Designed for premium AI engineering roles.</p>
+          <p>Built with React, TypeScript and Tailwind CSS.</p>
           <p>© 2026 Ayush Kumar. All rights reserved.</p>
         </div>
       </footer>

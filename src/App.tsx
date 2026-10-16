@@ -92,6 +92,21 @@ const projects: Project[] = [
     links: [{ label: 'GitHub', href: 'https://github.com/Ayusk19' }],
   },
   {
+    title: 'Trust-Aware Pearl Millet Disease Diagnosis',
+    description:
+      'Phone-sized CNN that diagnoses downy mildew from farmer photos, explains itself with Grad-CAM, and abstains when the photo or prediction is unreliable. 98.4% test accuracy.',
+    features: [
+      'MobileNetV2 transfer learning, 3 classes',
+      'Grad-CAM explanations + leaf-evidence check',
+      'Image-quality gate and calibrated abstention',
+      'Smartphone-robustness benchmark (7 x 5)',
+      'TFLite FP32/FP16/INT8 export + Streamlit app',
+    ],
+    tags: ['Python', 'TensorFlow', 'TFLite', 'Grad-CAM', 'Streamlit', 'pytest'],
+    categories: ['AI'],
+    links: [{ label: 'GitHub', href: 'https://github.com/Ayusk19/pearl-millet-trust-aware-diagnosis' }],
+  },
+  {
     title: 'Tech Fest Event Management Platform',
     description:
       'Modern event management dashboard with smooth admin workflows and responsive UI.',
@@ -171,6 +186,7 @@ const research: ResearchItem[] = [
     title: 'CNN-based Pearl Millet Disease Detection',
     description:
       'Comparative CNN study (EfficientNet, ResNet50, InceptionV3, VGG16) for early downy mildew detection, currently under review. Extended in my M.Tech dissertation with lightweight, explainable (Grad-CAM) models.',
+    link: { label: 'View code', href: 'https://github.com/Ayusk19/pearl-millet-trust-aware-diagnosis' },
   },
   {
     title: 'DevSecOps Practices for Safe Delivery',
